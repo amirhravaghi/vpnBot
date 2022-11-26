@@ -23,8 +23,8 @@ const bot = new Telegraf(config.get('bot_token'));
 // Bot message handler
 bot.on('message', (ctx) => {
     
-    let debugChatIds = [98484342,727539725,894815485,77363322,885548849,1771771581];
-    if(!debugChatIds.includes(ctx.chat.id)) return 0;
+    // let debugChatIds = [98484342,727539725,894815485,77363322,885548849,1771771581];
+    // if(!debugChatIds.includes(ctx.chat.id)) return 0;
     
     let bannedIds = [5463638796,"BicVIP"];
     if(bannedIds.includes(ctx.chat.id) || bannedIds.includes(ctx.chat.username)) return 0;
@@ -34,7 +34,6 @@ bot.on('message', (ctx) => {
     mongoose.connect(`mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}:${config.get("db.port")}/${config.get('db.db_name')}?authSource=admin`,{ useNewUrlParser: true,useUnifiedTopology: true })
     .then(async () => {
         
-        ctx.reply(ctx.message.text);
         // ac.updateCount();
         // let accountsLeftCount = ac.getAccountsCount();
         // ctx.reply("Count: " + accountsLeftCount);
