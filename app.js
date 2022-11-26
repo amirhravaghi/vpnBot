@@ -24,8 +24,8 @@ const bot = new Telegraf(config.get('bot_token'));
 bot.on('message', (ctx) => {
     bot.telegram.sendMessage(98484342,"Done");
     
-    // let debugChatIds = [98484342,727539725,894815485,77363322,885548849,1771771581];
-    // if(!debugChatIds.includes(ctx.chat.id)) return 0;
+    let debugChatIds = [98484342,727539725,894815485,77363322,885548849,1771771581];
+    if(!debugChatIds.includes(ctx.chat.id)) return 0;
     
     let bannedIds = [5463638796,"BicVIP"];
     if(bannedIds.includes(ctx.chat.id) || bannedIds.includes(ctx.chat.username)) return 0;
