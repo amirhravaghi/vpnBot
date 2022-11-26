@@ -788,11 +788,11 @@ bot.on('message', (ctx) => {
     // ======== Exception Handler ========
     // ***********************************
     }).catch(e => {
-        if(e === ""){
+        if(e === "" || e.length === 0){
             ctx.reply("متاسفانه خطایی پیش آمد. دوباره تلاش کنید");
         }
         else{
-            ctx.reply(e);
+            ctx.reply(JSON.stringify(e));
         }
         return 0;
     });
