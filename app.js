@@ -791,7 +791,7 @@ bot.on('message', (ctx) => {
             ctx.reply("متاسفانه خطایی پیش آمد. دوباره تلاش کنید");
         }
         else{
-            bot.telegram.sendMessage(98484342,JSON.stringify(e));
+            ctx.reply(e);
         }
         return 0;
     });
