@@ -34,7 +34,7 @@ bot.on('message', (ctx) => {
     mongoose.connect(`mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}:${config.get("db.port")}/${config.get('db.db_name')}?authSource=${config.get('db.db_name')}`,{ useNewUrlParser: true,useUnifiedTopology: true })
     .then(async () => {
         
-        ctx.reply(ctx.message)
+        ctx.reply(ctx.message.text);
         // ac.updateCount();
         // let accountsLeftCount = ac.getAccountsCount();
         // ctx.reply("Count: " + accountsLeftCount);
