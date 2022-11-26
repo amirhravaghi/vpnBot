@@ -17,7 +17,7 @@ const levels = require("./modules/levels");
 const bot = new Telegraf(config.get('bot_token'));
 
 // DB Connection
-mongoose.connect(`mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}:${config.get('db.port')}/${config.get('db.db_name')}?authSource=${config.get('db.db_name')}`,{ useNewUrlParser: true,useUnifiedTopology: true })
+mongoose.connect(`mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}:${config.get("db.port")}/${config.get('db.db_name')}?authSource=admin`,{ useNewUrlParser: true,useUnifiedTopology: true })
 .then(async () => {
 
     accountModel.Account.updateMany({},{"$inc":{remaining: -1}}).then((res) => {
