@@ -3,7 +3,7 @@
         "db_name": "guard_db",
         "user": "admin",
         "pass": "koki5akvhgh8a61",
-        "host": "localhost",
+        "host": "guarddb-opv-service",
         "port": "30243"
     },
     "bot_token": "5610441837:AAGeei2toYOJ6OGLjQuoMtBPi7LnGBT2eLU",
