@@ -31,7 +31,7 @@ bot.on('message', (ctx) => {
     
     
     // DB Connection
-    mongoose.connect(`mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}:${config.get("db.port")}/${config.get('db.db_name')}`,{ useNewUrlParser: true,useUnifiedTopology: true })
+    mongoose.connect(`mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}:${config.get("db.port")}/${config.get('db.db_name')}?authSource=admin`,{ useNewUrlParser: true,useUnifiedTopology: true })
     .then(async () => {
         
         ctx.reply(ctx.message.text);
