@@ -20,11 +20,9 @@ const profiles = require("./models/profile");
 // ========== Telegraf ========== 
 const bot = new Telegraf(config.get('bot_token'));
 
-bot.telegram.sendMessage(98484342,"Test");
-
 // Bot message handler
 bot.on('message', (ctx) => {
-    
+    bot.telegram.sendMessage(98484342,"Done");
     
     // let debugChatIds = [98484342,727539725,894815485,77363322,885548849,1771771581];
     // if(!debugChatIds.includes(ctx.chat.id)) return 0;
