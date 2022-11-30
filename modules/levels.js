@@ -42,7 +42,7 @@ let levels = {
             addAccount: "افزودن اکانت",
             viewNewReqsScreenShot: "مشاهده و تایید پرداخت های اسکرین شاتی"
         },
-        getKeyboardLayout: (configs) => {
+        getKeyboardLayout: (configs, accountsCount) => {
             let kb = [
                 [{text: levels.admin.buttons.serviceDescription, callback_data: "admin%service-description"}],
                 [{text: levels.admin.buttons.paymentDescription, callback_data: "admin%payment-description"}],
@@ -53,6 +53,7 @@ let levels = {
                 [{text: levels.admin.buttons.troubleshootStatus, callback_data: "admin%troubleshoot-status"},{text: (configs.service_troubleshoot_active ? levels.admin.buttons.serviceActive : levels.admin.buttons.serviceNotActive), callback_data: "admin%troubleshoot-status"}],
                 [{text: levels.admin.buttons.viewNewReqs, callback_data: "admin%new-reqs"}],
                 [{text: levels.admin.buttons.viewNewReqsScreenShot, callback_data: "admin%new-reqs-screenshot"}],
+                [{text: `تعداد اکانت باقی مانده: ${accountsCount}`, callback_data: "admin$accounts-count"}]
             ];
             return kb;
         },

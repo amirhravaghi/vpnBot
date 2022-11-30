@@ -435,7 +435,7 @@ bot.on('message', (ctx) => {
             if(message === levels.home.buttons.admin){
                 bot.telegram.sendMessage(ctx.chat.id,levels.admin.responses.menu,{
                     reply_markup: {
-                        inline_keyboard: levels.admin.getKeyboardLayout(generals)
+                        inline_keyboard: levels.admin.getKeyboardLayout(generals,await profiles.Profile.find({is_used: false}).count())
                     }
                 });
             }
@@ -759,7 +759,6 @@ bot.on('message', (ctx) => {
                                     }
                                     else{
                                         let newReqs = await reqs.Req.find({checked: false, screenshot: false}).exec();
-                                        ctx.deleteMessage();
                                         bot.telegram.sendMessage(ctx.chat.id,levels.admin.responses.menu,{
                                             reply_markup: {
                                                 inline_keyboard: levels.admin.getReqsKeyboardLayout(newReqs)
