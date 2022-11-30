@@ -54,7 +54,7 @@ let levels = {
                 [{text: levels.admin.buttons.viewNewReqs, callback_data: "admin%new-reqs"}],
                 [{text: levels.admin.buttons.viewNewReqsScreenShot, callback_data: "admin%new-reqs-screenshot"}],
                 [{text: `تعداد اکانت باقی مانده: ${accountsCount}`, callback_data: "admin$accounts-count"}]
-            ];
+            ]; 
             return kb;
         },
         getReqsKeyboardLayout: (reqs) => {
