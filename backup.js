@@ -27,11 +27,11 @@ mongoose.connect(`mongodb://${config.get('db.user')}:${config.get('db.pass')}@${
     const folder = zip.folder(`${config.get('db.db_name')}-${date}`);
 
     // Data fetch
-    let usersJson = JSON.parse(await users.User.find({}));
-    let configsJson = JSON.parse(await configModel.Config.find({}));
-    let accountsJson = JSON.parse(await accountModel.Account.find({}));
-    let profilesJson = JSON.parse(await profiles.Profile.find({}));
-    let reqsJson = JSON.parse(await reqs.Req.find({}));
+    let usersJson = JSON.stringify(await users.User.find({}));
+    let configsJson = JSON.stringify(await configModel.Config.find({}));
+    let accountsJson = JSON.stringify(await accountModel.Account.find({}));
+    let profilesJson = JSON.stringify(await profiles.Profile.find({}));
+    let reqsJson = JSON.stringify(await reqs.Req.find({}));
 
     // Create JSON Files
     folder.file(`users-${date}.json`,usersJson);
