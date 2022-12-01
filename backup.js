@@ -44,7 +44,7 @@ mongoose.connect(`mongodb://${config.get('db.user')}:${config.get('db.pass')}@${
         .pipe(fs.createWriteStream(`backup/backup-${date}.zip`))
         .on('finish', function () {
             console.log("zip written.");
-            bot.telegram.sendDocument("+JvQIWxXBZetiN2E0",`backup/backup-${date}.zip`);
+            bot.telegram.sendDocument(-1001802043097,`backup/backup-${date}.zip`);
         });
 
 }).catch(err => {
