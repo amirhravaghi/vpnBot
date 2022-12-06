@@ -613,13 +613,7 @@ bot.on('message', (ctx) => {
                                         // Checks accounts left
                                         let accountsLeft = await profiles.Profile.find({is_used: false}).count();
                                         if(accountsLeft <= 20){
-                                            users.User.find({role: "admin"}).exec().then(data => {
-                            
-                                                data.forEach(admin => {
-                                                    bot.telegram.sendMessage(admin.telegram_chat_id,"تعداد اکانت باقی مانده در ربات: " + accountsLeft);
-                                                });
-                                                
-                                            })
+                                            ctx.sendMessage("تعداد اکانت باقی مانده در ربات: " + accountsLeft);
                                         }
                         
                                         req.approved = true;
