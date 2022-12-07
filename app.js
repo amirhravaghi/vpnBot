@@ -162,28 +162,29 @@ bot.on('message', (ctx) => {
                             }
                         }
                         else{
-                            if(!isNaN(Number(message))){
-                                if(await new reqs.Req({
-                                    telegram_chat_id: ctx.chat.id,
-                                    telegram_username: ctx.chat.username,
-                                    ref_id: Number(message),
-                                    approved: false,
-                                    checked: false,
-                                    type: "purchase",
-                                    creation_date: (new Date()).toLocaleDateString()
-                                }).save()){
-                                    ctx.reply(levels.purchase.responses.success,Markup.keyboard(
-                                    [
-                                        [levels.general.buttons.back]
-                                    ]).oneTime().resize());
-                                }
-                                else{
-                                    throw("متاسفانه خطایی در ثبت کد اتفاق افتاد. جهت بررسی و دریافت اکانت به آیدی پشتیبانی پیام دهید");
-                                }
-                            }
-                            else{
-                                throw("کد وارد شده معتبر نمی باشد");
-                            }
+                            // if(!isNaN(Number(message))){
+                            //     if(await new reqs.Req({
+                            //         telegram_chat_id: ctx.chat.id,
+                            //         telegram_username: ctx.chat.username,
+                            //         ref_id: Number(message),
+                            //         approved: false,
+                            //         checked: false,
+                            //         type: "purchase",
+                            //         creation_date: (new Date()).toLocaleDateString()
+                            //     }).save()){
+                            //         ctx.reply(levels.purchase.responses.success,Markup.keyboard(
+                            //         [
+                            //             [levels.general.buttons.back]
+                            //         ]).oneTime().resize());
+                            //     }
+                            //     else{
+                            //         throw("متاسفانه خطایی در ثبت کد اتفاق افتاد. جهت بررسی و دریافت اکانت به آیدی پشتیبانی پیام دهید");
+                            //     }
+                            // }
+                            // else{
+                            //     throw("کد وارد شده معتبر نمی باشد");
+                            // }
+                            throw("لطفا اسکرین شات پرداخت خود را ارسال کنید");
                         }
                     }
                     
