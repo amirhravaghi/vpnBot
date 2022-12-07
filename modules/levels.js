@@ -40,7 +40,8 @@ let levels = {
             serviceNotActive: "❌ غیرفعال",
             viewNewReqs: "مشاهده و تایید پرداخت ها",
             addAccount: "افزودن اکانت",
-            viewNewReqsScreenShot: "مشاهده و تایید پرداخت های اسکرین شاتی"
+            viewNewReqsScreenShot: "مشاهده و تایید پرداخت های اسکرین شاتی",
+            viewStats: "مشاهده آمار"
         },
         getKeyboardLayout: (configs, accountsCount) => {
             let kb = [
@@ -53,6 +54,7 @@ let levels = {
                 [{text: levels.admin.buttons.troubleshootStatus, callback_data: "admin%troubleshoot-status"},{text: (configs.service_troubleshoot_active ? levels.admin.buttons.serviceActive : levels.admin.buttons.serviceNotActive), callback_data: "admin%troubleshoot-status"}],
                 [{text: levels.admin.buttons.viewNewReqs, callback_data: "admin%new-reqs"}],
                 [{text: levels.admin.buttons.viewNewReqsScreenShot, callback_data: "admin%new-reqs-screenshot"}],
+                [{text: levels.admin.buttons.viewStats, callback_data: "admin%view-stats"}],
                 [{text: `تعداد اکانت باقی مانده: ${accountsCount}`, callback_data: "admin$accounts-count"}]
             ]; 
             return kb;
@@ -84,6 +86,15 @@ let levels = {
         },
         getAccountsToShut: (ids) => {
             return `اکانت هایی که تمدید نکرده و باید قطع شوند: \n\n ${ids} \n\n`;
+        },
+        getStatsString: (data) => {
+            return `
+✅ آمار ربات
+
+تعداد کاربران: ${data.users}
+تعداد کاربرانی که تا به حال اکانت خریداری کرده اند: ${data.activeUsers}
+تعداد اکانت های فروخته شده: ${data.accounts}
+            `;
         }
     },
     home: {

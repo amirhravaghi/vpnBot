@@ -542,6 +542,22 @@ bot.on('message', (ctx) => {
                         }
                         
                         break;
+
+                    case "view-stats":
+                        let usersCount = await users.User.find({}).count();
+                        let activeUsersIds = [];
+                        let allaccs = await reqs.Req.find({});
+                        allaccs.forEach(item => {
+                            if(!activeUsersIds.includes(item.telegram_chat_id)){
+                                activeUsersIds.push(item.telegram_chat_id);
+                            }
+                        })
+                        ctx.reply(levels.admin.getStatsString({
+                            users: usersCount,
+                            activeUsers: activeUsersIds.length,
+                            accounts: allaccs.length
+                        }));
+                        break;
                         
                     case "new-reqs":
                         userObj.level = "admin_new_reqs";
