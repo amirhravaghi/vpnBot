@@ -75,23 +75,31 @@ bot.on('message', (ctx) => {
                     ctx.reply(levels.purchase.responses.notActive);
                     break;
                 }
-                if(await profiles.Profile.find({is_used: false}).count() === 0){
-                    ctx.reply(levels.purchase.responses.noAccount);
+                else{
+                    if(await profiles.Profile.find({is_used: false}).count() === 0){
+                        ctx.reply(levels.purchase.responses.noAccount);
+                        break;
+                    }
+                    else if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_1'}})) {
+                        ctx.reply(generals.service_description,Markup.keyboard(levels.purchase.getKeyboardLayout()).oneTime().resize());
+                    }
+                    else{ throw("") }
                     break;
                 }
-                else if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_1'}})) {
-                    ctx.reply(generals.service_description,Markup.keyboard(levels.purchase.getKeyboardLayout()).oneTime().resize());
-                }
-                else{ throw("") }
-                break;
                 
             case levels.purchase.buttons.accept: 
-                if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_2'}})) {
-                    ctx.reply(levels.purchase.responses.payment,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
-                    ctx.reply(generals.payment_description);
+                if(!generals.service_active){
+                    ctx.reply(levels.purchase.responses.notActive);
+                    break;
                 }
-                else{ throw("") }
-                break;
+                else{
+                    if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_2'}})) {
+                        ctx.reply(levels.purchase.responses.payment,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
+                        ctx.reply(generals.payment_description);
+                    }
+                    else{ throw("") }
+                    break;
+                }
             
             case levels.home.buttons.tutorials:
                 ctx.reply(generals.tutorial_message,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
