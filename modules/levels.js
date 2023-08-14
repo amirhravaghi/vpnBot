@@ -50,7 +50,6 @@ let levels = {
                 [{text: levels.admin.buttons.paymentDescription, callback_data: "admin%payment-description"}],
                 [{text: levels.admin.buttons.sendAllMessage, callback_data: "admin%send-all"}],
                 [{text: levels.admin.buttons.troubleshootMessage, callback_data: "admin%troubleshoot-message"}],
-                [{text: levels.admin.buttons.addAccount, callback_data: "admin%add-accounts"}],
                 [{text: levels.admin.buttons.serviceStatus, callback_data: "admin%service-status"},{text: (configs.service_active ? levels.admin.buttons.serviceActive : levels.admin.buttons.serviceNotActive), callback_data: "admin%service-status"}],
                 [{text: levels.admin.buttons.troubleshootStatus, callback_data: "admin%troubleshoot-status"},{text: (configs.service_troubleshoot_active ? levels.admin.buttons.serviceActive : levels.admin.buttons.serviceNotActive), callback_data: "admin%troubleshoot-status"}],
                 [{text: levels.admin.buttons.viewNewReqs, callback_data: "admin%new-reqs"}],
