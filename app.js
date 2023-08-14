@@ -31,7 +31,6 @@ bot.on('message', (ctx) => {
         // DB Connection
         mongoose.set('strictQuery', true);
         let connectionString = `mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}/${config.get('db.db_name')}?authSource=admin`;
-        console.log(connectionString);
         mongoose.connect(connectionString,{ useNewUrlParser: true,useUnifiedTopology: true })
         .then(async () => {
             
@@ -72,17 +71,12 @@ bot.on('message', (ctx) => {
             // *****************************************
             switch(message){
                 case levels.home.buttons.purchase: 
-                console.log(generals);
                     if(!generals.service_active){
                         ctx.reply(levels.purchase.responses.notActive);
                         break;
                     }
                     else{
-                        if(await profiles.Profile.find({is_used: false}).count() === 0){
-                            ctx.reply(levels.purchase.responses.noAccount);
-                            break;
-                        }
-                        else if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_1'}})) {
+                        if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_1'}})) {
                             ctx.reply(generals.service_description,Markup.keyboard(levels.purchase.getKeyboardLayout()).oneTime().resize());
                         }
                         else{ throw("") }
