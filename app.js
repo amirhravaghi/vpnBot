@@ -40,8 +40,6 @@ bot.on('message', (ctx) => {
             // ctx.reply("Count: " + accountsLeftCount);
             let message = ctx.message.text;
             let generals = await generalConfigs.Config.findOne({});
-            console.log(generals);
-            console.log("In you go");
             
             
             // Check if admin
@@ -74,6 +72,7 @@ bot.on('message', (ctx) => {
             // *****************************************
             switch(message){
                 case levels.home.buttons.purchase: 
+                console.log(generals);
                     if(!generals.service_active){
                         ctx.reply(levels.purchase.responses.notActive);
                         break;
