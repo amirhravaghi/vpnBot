@@ -418,7 +418,7 @@ bot.on('message', (ctx) => {
                 if(message === levels.home.buttons.admin){
                     bot.telegram.sendMessage(ctx.chat.id,levels.admin.responses.menu,{
                         reply_markup: {
-                            inline_keyboard: levels.admin.getKeyboardLayout(generals,await profiles.Profile.find({is_used: false}).count())
+                            inline_keyboard: levels.admin.getKeyboardLayout(generals)
                         }
                     });
                 }
