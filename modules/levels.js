@@ -1,9 +1,12 @@
 let levels = {
     general: {
         responses:{
+            notsub: `کاربر گرامی  
+            به هایپرشاپ خوش اومدی 
+            برای شروع کار با ربات و خرید اشتراک بر روی /start کلیک کن`,
             subscription: `
             سلام
-به ربات گارد پراکسی خوش آمدید
+به ربات هایپر وی پی ان خوش آمدید
 
 با استفاده از این ربات شما میتوانید خدمات زیر را به راحتی در اختیار داشته باشید
 - خرید اکانت
@@ -28,6 +31,7 @@ let levels = {
             changeReq: "لطفا متن مورد نظر خود را ارسال کنید",
             success: "عملیات با موفقیت انجام شد",
             accountReq: "لطفا فایل های اکانت را ارسال کنید",
+            configReq: "لطفا کانفیگ مورد نظر را وارد کنید"
         },
         buttons: {
             serviceDescription: "تغییر متن توضیحات سرویس",
@@ -38,12 +42,9 @@ let levels = {
             troubleshootStatus: "حالت تعمیر",
             serviceActive: "✅ فعال",
             serviceNotActive: "❌ غیرفعال",
-            viewNewReqs: "مشاهده و تایید پرداخت ها",
-            addAccount: "افزودن اکانت",
             viewNewReqsScreenShot: "مشاهده و تایید پرداخت های اسکرین شاتی",
-            viewStats: "مشاهده آمار"
         },
-        getKeyboardLayout: (configs, accountsCount) => {
+        getKeyboardLayout: (configs) => {
             let kb = [
                 [{text: levels.admin.buttons.serviceDescription, callback_data: "admin%service-description"}],
                 [{text: levels.admin.buttons.paymentDescription, callback_data: "admin%payment-description"}],
@@ -54,8 +55,6 @@ let levels = {
                 [{text: levels.admin.buttons.troubleshootStatus, callback_data: "admin%troubleshoot-status"},{text: (configs.service_troubleshoot_active ? levels.admin.buttons.serviceActive : levels.admin.buttons.serviceNotActive), callback_data: "admin%troubleshoot-status"}],
                 [{text: levels.admin.buttons.viewNewReqs, callback_data: "admin%new-reqs"}],
                 [{text: levels.admin.buttons.viewNewReqsScreenShot, callback_data: "admin%new-reqs-screenshot"}],
-                [{text: levels.admin.buttons.viewStats, callback_data: "admin%view-stats"}],
-                [{text: `تعداد اکانت باقی مانده: ${accountsCount}`, callback_data: "admin$accounts-count"}]
             ]; 
             return kb;
         },
@@ -98,7 +97,7 @@ let levels = {
         }
     },
     home: {
-        response: "به ربات گارد پراکسی خوش آمدید",
+        response: "به ربات هایپر وی پی ان خوش آمدید",
         buttons: {
             purchase: "🛒 خرید سرویس جدید",
             troubleshoot: "🔧 رفع مشکل قطعی و کندی",

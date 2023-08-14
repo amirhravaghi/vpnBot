@@ -4,8 +4,6 @@ const fs = require("fs");
 
 const accountHandler = {
     
-    
-    
     // Pull Account
     getAccount: function(ctx = null) {
         return new Promise(async(resolve,reject) => {
