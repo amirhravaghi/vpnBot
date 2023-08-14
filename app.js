@@ -38,6 +38,7 @@ bot.on('message', (ctx) => {
             // ctx.reply("Count: " + accountsLeftCount);
             let message = ctx.message.text;
             let generals = await generalConfigs.Config.findOne({});
+            console.log(generals);
             
             
             // Check if admin
