@@ -1,10 +1,10 @@
 {
     "db": {
-        "db_name": "main-iyh-service",
+        "db_name": "admin",
         "user": "admin",
         "pass": "ytdru5yyjyst3wn",
-        "host": "remote.runflare.com",
-        "port": 30419
+        "host": "main-iyh-service",
+        "port": 80
     },
     "bot_token": "6629558961:AAFcTAj02IJxLDlq04l8vjlT_MD9p989vcQ",
     "bot_id": "@hypershop_vpn_bot",
