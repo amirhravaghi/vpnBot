@@ -74,8 +74,10 @@ bot.on('message', (ctx) => {
                     }
                     else{
                         if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_1'}})) {
-                            console.log(typeof generals);
-                            ctx.reply(generals.service_description,Markup.keyboard(levels.purchase.getKeyboardOperatorLayout()).oneTime().resize());
+                            if(generals){
+                                console.log(generals);
+                                ctx.reply(generals.service_description.toString(),Markup.keyboard(levels.purchase.getKeyboardOperatorLayout()).oneTime().resize());
+                            }
                         }
                         else{ throw("asdasdasds") }
                         break;
