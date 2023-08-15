@@ -127,6 +127,7 @@ bot.on('message', (ctx) => {
                     
                 default:
                     if(Object.values(levels.purchase.buttons.operators).includes(message)){
+                        console.log("Entered");
                         if(!generals.service_active){
                             ctx.reply(levels.purchase.responses.notActive);
                             break;
