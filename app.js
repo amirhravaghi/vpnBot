@@ -144,7 +144,7 @@ bot.on('message', (ctx) => {
                                     status: "temp",
                                     operator: message
                                 }).save()){
-                                    ctx.reply(levels.plans.responses.menu,Markup.keyboard([levels.plans.getKeyboardLayout()]).oneTime().resize());
+                                    ctx.reply(levels.plans.responses.menu,Markup.keyboard(levels.plans.getKeyboardLayout()).oneTime().resize());
                                     // ctx.reply(levels.purchase.responses.payment,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
                                     // ctx.reply(generals.payment_description);
                                 }
