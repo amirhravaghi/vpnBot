@@ -148,7 +148,7 @@ let levels = {
         },
         getKeyboardOperatorLayout: () => {
             return [
-                [levels.purchase.buttons.op1,levels.operator.buttons.op2],
+                [levels.purchase.buttons.operators.op1,levels.operator.buttons.operators.op2],
                 [levels.general.buttons.back]
             ]
         },
