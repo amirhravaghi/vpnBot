@@ -11,6 +11,9 @@ const Req = mongoose.model('req',new mongoose.Schema({
     type: String,
     renewal_account: {type: String, default: null},
     creation_date: String,
+    operator: {type: String, default: null},
+    status: String,
+    plan: {type: String, default: null}
 }));
 
 

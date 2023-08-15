@@ -34,9 +34,6 @@ bot.on('message', (ctx) => {
         mongoose.connect(connectionString,{ useNewUrlParser: true,useUnifiedTopology: true })
         .then(async () => {
             
-            // ac.updateCount();
-            // let accountsLeftCount = ac.getAccountsCount();
-            // ctx.reply("Count: " + accountsLeftCount);
             let message = ctx.message.text;
             let generals = await generalConfigs.Config.findOne({});
             
@@ -77,21 +74,7 @@ bot.on('message', (ctx) => {
                     }
                     else{
                         if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_1'}})) {
-                            ctx.reply(generals.service_description,Markup.keyboard(levels.purchase.getKeyboardLayout()).oneTime().resize());
-                        }
-                        else{ throw("") }
-                        break;
-                    }
-                    
-                case levels.purchase.buttons.accept: 
-                    if(!generals.service_active){
-                        ctx.reply(levels.purchase.responses.notActive);
-                        break;
-                    }
-                    else{
-                        if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_2'}})) {
-                            ctx.reply(levels.purchase.responses.payment,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
-                            ctx.reply(generals.payment_description);
+                            ctx.reply(generals.service_description,Markup.keyboard(levels.purchase.getKeyboardOperatorLayout()).oneTime().resize());
                         }
                         else{ throw("") }
                         break;
@@ -141,11 +124,13 @@ bot.on('message', (ctx) => {
                     
                     
                 default:
-                    let userObj = await users.User.findOne({telegram_chat_id: ctx.chat.id}).exec();
-                    if(userObj){
-                        if(userObj.level === "purchase_2" && message !== levels.home.buttons.admin){
-                            if(ctx.message.photo){
-                                let photoFileId = ctx.message.photo[ctx.message.photo.length - 1].file_id;
+                    if(Object.values(levels.purchase.buttons.operators).includes(message)){
+                        if(!generals.service_active){
+                            ctx.reply(levels.purchase.responses.notActive);
+                            break;
+                        }
+                        else{
+                            if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_2'}})) {
                                 if(await new reqs.Req({
                                     telegram_chat_id: ctx.chat.id,
                                     telegram_username: ctx.chat.username,
@@ -153,9 +138,52 @@ bot.on('message', (ctx) => {
                                     checked: false,
                                     type: "purchase",
                                     creation_date: new Date().toLocaleDateString(),
-                                    screenshot: true,
-                                    screenshot_file_id: photoFileId
+                                    status: "temp",
+                                    operator: message
                                 }).save()){
+                                    ctx.reply(levels.purchase.responses.payment,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
+                                    ctx.reply(generals.payment_description);
+                                }
+                                else{
+                                    throw("متاسفانه خطایی اتفاق افتاد. جهت بررسی و دریافت اکانت به آیدی پشتیبانی پیام دهید");
+                                }
+                            }
+                            else{ throw("") }
+                            break;
+                        }
+                    }
+                    let userObj = await users.User.findOne({telegram_chat_id: ctx.chat.id}).exec();
+                    if(userObj){
+                        if(userObj.level === "purchase_2" && message !== levels.home.buttons.admin){
+                            if(!generals.service_active){
+                                ctx.reply(levels.purchase.responses.notActive);
+                                break;
+                            }
+                            else{
+                                if(!Object.values(levels.plans.buttons).includes(message)){ break; }
+                                if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'purchase_3'}})) {
+                                    let curReq = await reqs.Req.findOne({telegram_chat_id: ctx.chat.id,status: "temp"}).exec();
+                                    curReq.plan = message;
+                                    if(await curReq.save()){
+                                        ctx.reply(levels.purchase.responses.payment,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
+                                        ctx.reply(generals.payment_description);
+                                    }
+                                    else{
+                                        throw("متاسفانه خطایی اتفاق افتاد. جهت بررسی و دریافت اکانت به آیدی پشتیبانی پیام دهید");
+                                    }
+                                }
+                                else{ throw("") }
+                                break;
+                            }
+                        }
+                        if(userObj.level === "purchase_3" && message !== levels.home.buttons.admin){
+                            if(ctx.message.photo){
+                                let photoFileId = ctx.message.photo[ctx.message.photo.length - 1].file_id;
+                                let curReq = await reqs.Req.findOne({telegram_chat_id: ctx.chat.id,status: "temp"}).exec();
+                                curReq.screenshot = true;
+                                curReq.screenshot_file_id = photoFileId;
+                                curReq.status = "complete";
+                                if(await curReq.save()){
                                     ctx.reply(levels.purchase.responses.success,Markup.keyboard(
                                     [
                                         [levels.general.buttons.back]
