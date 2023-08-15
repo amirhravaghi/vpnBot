@@ -144,8 +144,9 @@ bot.on('message', (ctx) => {
                                     status: "temp",
                                     operator: message
                                 }).save()){
-                                    ctx.reply(levels.purchase.responses.payment,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
-                                    ctx.reply(generals.payment_description);
+                                    ctx.reply(levels.plans.responses.menu,Markup.keyboard([[levels.plans.getKeyboardLayout()]]).oneTime().resize());
+                                    // ctx.reply(levels.purchase.responses.payment,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
+                                    // ctx.reply(generals.payment_description);
                                 }
                                 else{
                                     throw("متاسفانه خطایی اتفاق افتاد. جهت بررسی و دریافت اکانت به آیدی پشتیبانی پیام دهید");
