@@ -26,7 +26,10 @@ bot.on('message', (ctx) => {
     // let debugChatIds = [98484342,727539725,894815485,77363322,885548849,1771771581];
     // if(!debugChatIds.includes(ctx.chat.id)) return 0;
     ctx.telegram.getChatMember(config.get("sponsor_channel"),ctx.chat.id).then((value) => {
-        console.log(value);
+        console.log(value.status);
+        if(value.status === "left" || value.status === "kicked"){
+            ctx.reply(levels.general.responses.notsub);
+        }
         // DB Connection
         mongoose.set('strictQuery', true);
         let connectionString = `mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}/${config.get('db.db_name')}?authSource=admin`;
@@ -772,8 +775,8 @@ bot.on('message', (ctx) => {
             return 0;
         });
 
-    }).catch(()=>{
-        ctx.reply(levels.general.responses.notsub);
+    }).catch((e)=>{
+        throw(e);
     })
     
     
