@@ -78,9 +78,9 @@ let levels = {
         getScreenshotReqKeyboard: (req,remaining) => {
             return [
                     [{text: `u/c: ${req.telegram_username ? req.telegram_username : req.telegram_chat_id}`, callback_data: "reqUsername"}],
-                    [{text: `${item.plan ? item.plan : "پلن مشخص نشده"}`, callback_data: "label"}],
-                    [{text: `${item.operator ? item.operator : "اپراتور مشخص نشده"}`, callback_data: "label"}],
-                    [{text: `وارد کردن کانفیگ اکانت`, callback_data: `admin%add-config-${item._id}`}],
+                    [{text: `${req.plan ? req.plan : "پلن مشخص نشده"}`, callback_data: "label"}],
+                    [{text: `${req.operator ? req.operator : "اپراتور مشخص نشده"}`, callback_data: "label"}],
+                    [{text: `وارد کردن کانفیگ اکانت`, callback_data: `admin%add-config-${req._id}`}],
                     [{text: '✅', callback_data:`admin%req-approve-${req._id}`},
                     {text: '❌', callback_data:`admin%req-reject-${req._id}`}],
                     [{text: `درخواست های باقی مانده: ${remaining}`, callback_data: "remaining"}]
