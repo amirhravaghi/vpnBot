@@ -13,7 +13,8 @@ const Req = mongoose.model('req',new mongoose.Schema({
     creation_date: String,
     operator: {type: String, default: null},
     status: String,
-    plan: {type: String, default: null}
+    plan: {type: String, default: null},
+    config: {type: String, default: null}
 }));
 
 

@@ -131,7 +131,6 @@ bot.on('message', (ctx) => {
                     
                 default:
                     if(Object.values(levels.purchase.buttons.operators).includes(message)){
-                        console.log("Entered");
                         if(!generals.service_active){
                             ctx.reply(levels.purchase.responses.notActive);
                             break;
@@ -515,17 +514,6 @@ bot.on('message', (ctx) => {
                             
                             break;
                             
-                        case "add-accounts":
-                            ctx.answerCbQuery();
-                            if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'requesting-account-files'}})){
-                                ctx.reply(levels.admin.responses.accountReq);
-                            }
-                            
-                            else{
-                                throw("");
-                            }
-                            
-                            break;
                             
                         case "service-status":
                             if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'home'}}) && await generalConfigs.Config.updateOne({},{"$set": {service_active: !generals.service_active}})){
@@ -624,137 +612,75 @@ bot.on('message', (ctx) => {
                                 if(req.checked){
                                     return;
                                 }
-                                if(req.type !== "renewal"){
-                                    // Get new account
-                                    
-                                    // Insert new account into db
-                                    let newAccount = new accountModel.Account({
-                                        telegram_chat_id: req.telegram_chat_id,
-                                        telegram_username: req.telegram_username,
-                                        ref_id: req.ref_id === null ? null : req.ref_id,
-                                        screenshot_file_id: (req.screenshot && req.screenshot_file_id !== null) ? req.screenshot_file_id : null,
-                                        account_id: account.config_id,
-                                        config_link: account.link,
-                                        remaining: 30,
-                                        creation_date: new Date().toLocaleDateString()
-                                    });
-                        
-                                    newAccount.save().then(async (value) => {
-                        
-                                        // Change account status
-                                        account.is_used = true;
-                                        account.save();
-                        
-                                        // Checks accounts left
-                                        let accountsLeft = await profiles.Profile.find({is_used: false}).count();
-                                        if(accountsLeft <= 20){
-                                            ctx.sendMessage("تعداد اکانت باقی مانده در ربات: " + accountsLeft);
-                                        }
-                        
-                                        req.approved = true;
-                                        req.checked = true;
-                                        
-                                        if(await req.save()){
-                                            bot.telegram.sendMessage(req.telegram_chat_id,levels.purchase.decorateAccount({id: account.config_id,config: account.link}),{
-                                                parse_mode: "MarkdownV2"
-                                            });
-                                            
-                                            // Set new keyboard
-                                            let user = await users.User.findOne({telegram_chat_id: ctx.chat.id}).exec();
-                                            if(user){
-                                                user.accounts_purchased += 1;
-                                                user.save();
-                                                
-                                                if(user.level === "admin-screenshot"){
-                                                    let newReq = await reqs.Req.findOne({checked: false, screenshot: true}).exec();
-                                                    let rCount = await reqs.Req.find({checked: false, screenshot: true}).count();
-                                                    if (newReq && rCount){
-                                                        bot.telegram.sendPhoto(ctx.chat.id,newReq.screenshot_file_id,{
-                                                            reply_markup: {
-                                                                inline_keyboard: levels.admin.getScreenshotReqKeyboard(newReq,rCount)
-                                                            }
-                                                        });
-                                                    }
-                                                    else{
-                                                        ctx.reply("درخواست جدیدی وجود ندارد");
-                                                    }
-                                                }
-                                                else{
-                                                    let newReqs = await reqs.Req.find({checked: false, screenshot: false}).exec();
-                                                    ctx.deleteMessage();
-                                                    bot.telegram.sendMessage(ctx.chat.id,levels.admin.responses.menu,{
-                                                        reply_markup: {
-                                                            inline_keyboard: levels.admin.getReqsKeyboardLayout(newReqs)
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        }
-                                        else{
-                                            throw(`
-                                            ذخیره اکانت در دیتابیس با موفقیت انجام شد.
-                                            به روزرسانی درخواست به حالت تایید شده ناموفق بود.
-                                            اطلاعات اکانت برای کاربر ارسال نگردید
-                                            `);
-                                        }
-                                        
-                                    }).catch(e => {
-                                        throw("ذخیره اکانت در دیتابیس ناموفق بود");
-                                    })
-                            
+                                if(req.config === null || req.config == ""){
+                                    ctx.reply(levels.admin.responses.configNotFound);
+                                    return;
                                 }
-                                else{
-                            
-                                    // Renewal
-                                    let cAccountId = req.renewal_account;
-                                    let cAccount = await accountModel.Account.findOne({account_id: cAccountId}).exec();
-                                    cAccount.remaining += 30;
-                                    if(await cAccount.save()){
-                                        req.approved = true;
-                                        req.checked = true;
-                                        if(await req.save()){
-                                            bot.telegram.sendMessage(cAccount.telegram_chat_id,levels.renewal.getSuccessMessage(cAccountId));
+                                    
+                                // Insert new account into db
+                                let newAccount = new accountModel.Account({
+                                    telegram_chat_id: req.telegram_chat_id,
+                                    telegram_username: req.telegram_username,
+                                    screenshot_file_id: (req.screenshot && req.screenshot_file_id !== null) ? req.screenshot_file_id : null,
+                                    config: req.config,
+                                    plan: req.plan,
+                                    operator: req.operator,
+                                    creation_date: new Date().toLocaleDateString()
+                                });
+                    
+                                newAccount.save().then(async (value) => {
+                    
+                                    req.approved = true;
+                                    req.checked = true;
+                                    
+                                    if(await req.save()){
+                                        bot.telegram.sendMessage(req.telegram_chat_id,levels.purchase.decorateAccount({id: account.config_id,config: account.link}),{
+                                            parse_mode: "MarkdownV2"
+                                        });
+                                        
+                                        // Set new keyboard
+                                        let user = await users.User.findOne({telegram_chat_id: ctx.chat.id}).exec();
+                                        if(user){
+                                            user.accounts_purchased += 1;
+                                            user.save();
                                             
-                                            // Set new keyboard
-                                            let user = await users.User.findOne({telegram_chat_id: ctx.chat.id}).exec();
-                                            if(user){
-                                                
-                                                user.accounts_purchased += 1;
-                                                user.save();
-                                                if(user.level === "admin-screenshot"){
-                                                    let newReq = await reqs.Req.findOne({checked: false, screenshot: true}).exec();
-                                                    let rCount = await reqs.Req.find({checked: false, screenshot: true}).count();
-                                                    if (newReq && rCount){
-                                                        bot.telegram.sendPhoto(ctx.chat.id,newReq.screenshot_file_id,{
-                                                            reply_markup: {
-                                                                inline_keyboard: levels.admin.getScreenshotReqKeyboard(newReq,rCount)
-                                                            }
-                                                        });
-                                                    }
-                                                    else{
-                                                        ctx.reply("درخواست جدیدی وجود ندارد");
-                                                    }
-                                                }
-                                                else{
-                                                    let newReqs = await reqs.Req.find({checked: false, screenshot: false}).exec();
-                                                    ctx.deleteMessage();
-                                                    bot.telegram.sendMessage(ctx.chat.id,levels.admin.responses.menu,{
+                                            if(user.level === "admin-screenshot"){
+                                                let newReq = await reqs.Req.findOne({checked: false, screenshot: true}).exec();
+                                                let rCount = await reqs.Req.find({checked: false, screenshot: true}).count();
+                                                if (newReq && rCount){
+                                                    bot.telegram.sendPhoto(ctx.chat.id,newReq.screenshot_file_id,{
                                                         reply_markup: {
-                                                            inline_keyboard: levels.admin.getReqsKeyboardLayout(newReqs)
+                                                            inline_keyboard: levels.admin.getScreenshotReqKeyboard(newReq,rCount)
                                                         }
                                                     });
                                                 }
+                                                else{
+                                                    ctx.reply("درخواست جدیدی وجود ندارد");
+                                                }
                                             }
-                                        }
-                                        else{
-                                            throw("به روزسانی اکانت با موفقیت انجام شد. تغییر وضعیت درخواست به تایید شده ناموفق بود.")
+                                            else{
+                                                let newReqs = await reqs.Req.find({checked: false, screenshot: false}).exec();
+                                                ctx.deleteMessage();
+                                                bot.telegram.sendMessage(ctx.chat.id,levels.admin.responses.menu,{
+                                                    reply_markup: {
+                                                        inline_keyboard: levels.admin.getReqsKeyboardLayout(newReqs)
+                                                    }
+                                                });
+                                            }
                                         }
                                     }
                                     else{
-                                        throw("تمدید ناموفق بود");
+                                        throw(`
+                                        ذخیره اکانت در دیتابیس با موفقیت انجام شد.
+                                        به روزرسانی درخواست به حالت تایید شده ناموفق بود.
+                                        اطلاعات اکانت برای کاربر ارسال نگردید
+                                        `);
                                     }
+                                    
+                                }).catch(e => {
+                                    throw("ذخیره اکانت در دیتابیس ناموفق بود");
+                                })
                             
-                                }
                                 
                                 
     
