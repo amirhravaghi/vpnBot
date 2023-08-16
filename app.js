@@ -162,6 +162,19 @@ bot.on('message', (ctx) => {
                     else{
                         let userObj = await users.User.findOne({telegram_chat_id: ctx.chat.id}).exec();
                         if(userObj){
+                            if(userObj.level.includes('add-config') && message !== levels.home.buttons.admin){
+                                let id = userObj.level.split('-')[2];
+                                reqs.Req.updateOne({_id: id},{"$set":{config: message}}).exec().then(()=>{
+                                    userObj.level = "admin-screenshot";
+                                    if(userObj.save()){
+                                        ctx.reply(levels.admin.responses.configAdded);
+                                        return;
+                                    }
+                                }).catch(e=>{
+                                    throw(e);
+                                });
+                                return;
+                            }
                             if(userObj.level === "purchase_2" && message !== levels.home.buttons.admin){
                                 if(!generals.service_active){
                                     ctx.reply(levels.purchase.responses.notActive);
@@ -603,6 +616,20 @@ bot.on('message', (ctx) => {
                             break;
                             
                         default:
+
+                            if(type.includes("add-config")){
+                                let id = type.split('-')[2];
+                                let req = await reqs.Req.findOne({_id: id}).exec();
+                                if(req.checked){
+                                    return;
+                                }
+
+                                users.User.updateOne({telegram_chat_id: ctx.chat.id},{"$set":{level: type}}).exec().then(()=>{
+                                    ctx.reply(levels.admin.responses.configReq);
+                                }).catch(e => {
+                                    throw(e);
+                                })
+                            }
                         
                             if(type.includes("req-approve")){
                                 

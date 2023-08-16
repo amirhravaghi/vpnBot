@@ -32,7 +32,8 @@ let levels = {
             success: "عملیات با موفقیت انجام شد",
             accountReq: "لطفا فایل های اکانت را ارسال کنید",
             configReq: "لطفا کانفیگ مورد نظر را وارد کنید",
-            configNotFound: "کانفیگی برای این اکانت ثبت نشده"
+            configNotFound: "کانفیگی برای این اکانت ثبت نشده",
+            configAdded: "کانفیگ اضافه شد"
         },
         buttons: {
             serviceDescription: "تغییر متن توضیحات سرویس",
