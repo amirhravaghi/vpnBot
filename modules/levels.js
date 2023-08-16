@@ -39,12 +39,12 @@ let levels = {
             serviceDescription: "تغییر متن توضیحات سرویس",
             paymentDescription: "تغییر متن روش پرداخت",
             sendAllMessage: "ارسال پیام همگانی",
-            troubleshootMessage: "تغییر متن رفع قطعی و کندی",
+            troubleshootMessage: "تغییر متن ارتباط با پشتیبانی",
             serviceStatus: "سرویس دهی",
             troubleshootStatus: "حالت تعمیر",
             serviceActive: "✅ فعال",
             serviceNotActive: "❌ غیرفعال",
-            viewNewReqsScreenShot: "مشاهده و تایید پرداخت های اسکرین شاتی",
+            viewNewReqsScreenShot: "مشاهده و تایید پرداخت ها",
         },
         getKeyboardLayout: (configs) => {
             let kb = [
@@ -53,7 +53,6 @@ let levels = {
                 [{text: levels.admin.buttons.sendAllMessage, callback_data: "admin%send-all"}],
                 [{text: levels.admin.buttons.troubleshootMessage, callback_data: "admin%troubleshoot-message"}],
                 [{text: levels.admin.buttons.serviceStatus, callback_data: "admin%service-status"},{text: (configs.service_active ? levels.admin.buttons.serviceActive : levels.admin.buttons.serviceNotActive), callback_data: "admin%service-status"}],
-                [{text: levels.admin.buttons.troubleshootStatus, callback_data: "admin%troubleshoot-status"},{text: (configs.service_troubleshoot_active ? levels.admin.buttons.serviceActive : levels.admin.buttons.serviceNotActive), callback_data: "admin%troubleshoot-status"}],
                 [{text: levels.admin.buttons.viewNewReqsScreenShot, callback_data: "admin%new-reqs-screenshot"}],
             ]; 
             return kb;

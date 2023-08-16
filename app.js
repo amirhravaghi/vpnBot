@@ -238,7 +238,7 @@ bot.on('message', (ctx) => {
                                             cond = userReq.screenshot ? {screenshot_file_id: userReq.screenshot_file_id} : {ref_id: userRefId};
                                             let account = await accountModel.Account.findOne(cond);
                                             if(account){
-                                                ctx.telegram.sendMessage(account.telegram_chat_id,levels.purchase.decorateAccount({id: account.account_id,config: account.config_link}),{
+                                                ctx.telegram.sendMessage(account.telegram_chat_id,levels.purchase.decorateAccount({id: account._id,config: account.config}),{
                                                     parse_mode: "MarkdownV2"
                                                 });
                                             }
@@ -601,8 +601,8 @@ bot.on('message', (ctx) => {
                             }
                         
                         case "new-reqs-screenshot":
-                            let newReq = await reqs.Req.findOne({checked: false, screenshot: true}).exec();
-                            let rCount = await reqs.Req.find({checked: false, screenshot: true}).count();
+                            let newReq = await reqs.Req.findOne({checked: false, screenshot: true, status: "complete"}).exec();
+                            let rCount = await reqs.Req.find({checked: false, screenshot: true, status: "complete"}).count();
                             if (newReq){
                                 if(await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'admin-screenshot'}})){
                                     ctx.deleteMessage();
