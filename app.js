@@ -25,10 +25,10 @@ bot.on('message', (ctx) => {
     
     // let debugChatIds = [98484342,727539725,894815485,77363322,885548849,1771771581];
     // if(!debugChatIds.includes(ctx.chat.id)) return 0;
-    ctx.telegram.getChatMember(config.get("sponsor_channel"),ctx.chat.id).then((value) => {
-        console.log(value.status);
-        if(value.status === "left" || value.status === "kicked"){
+    ctx.telegram.getChatMember(config.get("sponsor_channel"),ctx.chat.id).then((chatMember) => {
+        if(chatMember.status === "left" || chatMember.status === "kicked"){
             ctx.reply(levels.general.responses.notsub);
+            return;
         }
         // DB Connection
         mongoose.set('strictQuery', true);
