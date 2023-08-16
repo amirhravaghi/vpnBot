@@ -661,7 +661,7 @@ bot.on('message', (ctx) => {
                                     req.checked = true;
                                     
                                     if(await req.save()){
-                                        bot.telegram.sendMessage(req.telegram_chat_id,levels.purchase.decorateAccount({id: account.config_id,config: account.link}),{
+                                        bot.telegram.sendMessage(req.telegram_chat_id,levels.purchase.decorateAccount({id: req._id,config: req.config}),{
                                             parse_mode: "MarkdownV2"
                                         });
                                         
@@ -705,6 +705,7 @@ bot.on('message', (ctx) => {
                                     }
                                     
                                 }).catch(e => {
+                                    console.log(e);
                                     throw("ذخیره اکانت در دیتابیس ناموفق بود");
                                 })
                             
