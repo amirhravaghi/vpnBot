@@ -61,15 +61,17 @@ let levels = {
             for(let i=0;i<10;i++){
                 if(reqs[i]){
                     let item = reqs[i];
-                    kb.push([
-                    {text: `u/c: ${item.telegram_username ? item.telegram_username : item.telegram_chat_id} / ref: ${item.ref_id}`, callback_data: "label"}],
+                    kb.push(
+                    [{text: `u/c: ${item.telegram_username ? item.telegram_username : item.telegram_chat_id} / ref: ${item.ref_id}`, callback_data: "label"}],
+                    [{text: `${item.plan ? item.plan : "پلن مشخص نشده"}`, callback_data: "label"}],
+                    [{text: `${item.operator ? item.operator : "اپراتور مشخص نشده"}`, callback_data: "label"}],
+                    [{text: `وارد کردن کانفیگ اکانت`, callback_data: `admin%add-config-${item._id}`}],
                     [{text: '✅', callback_data:`admin%req-approve-${item._id}`},
                     {text: '❌', callback_data:`admin%req-reject-${item._id}`}]);
-                    
                 }
             }
             kb.push(
-                [{text: `Remaining: ${reqs.length}`, callback_data: "remaining"}]
+                [{text: `درخواست های باقی مانده: ${reqs.length}`, callback_data: "remaining"}]
             );
             return kb;
         },

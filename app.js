@@ -59,7 +59,9 @@ bot.on('message', (ctx) => {
             
             // Start handler and inserting new users
             if(message == '/start' || message == 'start'){
-                ctx.reply(levels.general.responses.subscription,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
+                if(await reqs.Req.deleteMany({telegram_chat_id: ctx.chat.id, status: "temp"}).exec()){
+                    ctx.reply(levels.general.responses.subscription,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
+                }
             }
             
             
@@ -78,7 +80,7 @@ bot.on('message', (ctx) => {
                                 ctx.reply(generals.service_description,Markup.keyboard(levels.purchase.getKeyboardOperatorLayout()).oneTime().resize());
                             }
                         }
-                        else{ throw("asdasdasds") }
+                        else{ throw("") }
                         break;
                     }
                 
