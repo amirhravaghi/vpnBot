@@ -112,7 +112,9 @@ bot.on('message', (ctx) => {
                     break;
                     
                 case levels.general.buttons.back:
-                    ctx.reply(levels.general.responses.subscription,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
+                    if(await reqs.Req.deleteMany({telegram_chat_id: ctx.chat.id, status: "temp"}).exec()){
+                        ctx.reply(levels.general.responses.subscription,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
+                    }
                     break;
                     
                 case levels.home.buttons.renewal:
