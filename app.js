@@ -7,14 +7,12 @@ const axios = require("axios");
 
 // ========== Modules ==========
 const levels = require("./modules/levels");
-const ac = require("./modules/accountHandler");
 
 // ========== Database Models ===========
 const users = require('./models/user');
 const reqs = require('./models/req');
 const generalConfigs = require('./models/config');
 const accountModel = require('./models/account');
-const profiles = require("./models/profile");
 
 // ******************************
 // ========== Telegraf ========== 
@@ -22,9 +20,7 @@ const bot = new Telegraf(config.get('bot_token'));
 
 // Bot message handler
 bot.on('message', (ctx) => {
-    
-    // let debugChatIds = [98484342,727539725,894815485,77363322,885548849,1771771581];
-    // if(!debugChatIds.includes(ctx.chat.id)) return 0;
+
     ctx.telegram.getChatMember(config.get("sponsor_channel"),ctx.chat.id).then((chatMember) => {
         if(chatMember.status === "left" || chatMember.status === "kicked"){
             ctx.reply(levels.general.responses.notsub);
@@ -32,7 +28,8 @@ bot.on('message', (ctx) => {
         }
         // DB Connection
         mongoose.set('strictQuery', true);
-        let connectionString = `mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}/${config.get('db.db_name')}?authSource=admin`;
+        // let connectionString = `mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}/${config.get('db.db_name')}?authSource=admin`;
+        let connectionString = "mongodb://localhost:27017/vpnbotdb";
         mongoose.connect(connectionString,{ useNewUrlParser: true,useUnifiedTopology: true })
         .then(async () => {
             
@@ -118,15 +115,6 @@ bot.on('message', (ctx) => {
                 case levels.general.buttons.back:
                     if(await reqs.Req.deleteMany({telegram_chat_id: ctx.chat.id, status: "temp"}).exec()){
                         ctx.reply(levels.general.responses.subscription,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
-                    }
-                    break;
-                    
-                case levels.home.buttons.renewal:
-                    if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'renewal_state'}})) {
-                        ctx.reply(levels.renewal.responses.main,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
-                    }
-                    else{
-                        throw("");
                     }
                     break;
                     
@@ -258,96 +246,6 @@ bot.on('message', (ctx) => {
                                 }
                             }
                             
-                            else if(userObj.level === "renewal_state" && message !== levels.home.buttons.admin){
-                                let targetAccount = await accountModel.Account.findOne({$or: [{account_id: message},{config_link: message}]}).exec();
-                                if(targetAccount){
-                                    if(await users.User.updateOne({telegram_chat_id: ctx.chat.id},{'$set':{level: 'renewal_account'}})){
-                                        let kb = [];
-                                        if(targetAccount.remaining >= -5 && targetAccount.remaining < 6){
-                                            kb.push(["تمدید اکانت: " + targetAccount.account_id]);
-                                        }
-                                        kb.push([levels.general.buttons.back])
-                                        bot.telegram.sendMessage(ctx.chat.id,levels.renewal.getDecoratedInfo(targetAccount),{
-                                            parse_mode: "MarkdownV2",
-                                            reply_markup: {
-                                                keyboard: kb,
-                                                one_time_keyboard: true,
-                                                resize_keyboard: true
-                                            }
-                                        })
-                                    }
-                                    else{
-                                        throw("");
-                                    }
-                                }
-                                else{
-                                    ctx.reply(levels.renewal.responses.notFound,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
-                                }
-                            }
-                            
-                            else if(userObj.level === "renewal_account" && message !== levels.home.buttons.admin){
-                                let id = message.split(":")[1].trim();
-                                if(await users.User.updateOne({telegram_chat_id: ctx.chat.id},{'$set':{level: 'renewal_account_level/' + id}})){
-                                    ctx.reply(generals.service_description);
-                                    ctx.reply(generals.payment_description);
-                                    ctx.reply(levels.purchase.responses.payment);
-                                }
-                                else{
-                                    throw("");
-                                }
-                            }
-                            
-                            else if(userObj.level.includes('renewal_account_level') && message !== levels.home.buttons.admin){
-                                let accountId = userObj.level.split("/")[1].trim();
-                                if(ctx.message.photo){
-                                    let photoFileId = ctx.message.photo[ctx.message.photo.length - 1].file_id;
-                                    if(await new reqs.Req({
-                                        telegram_chat_id: ctx.chat.id,
-                                        telegram_username: ctx.chat.username,
-                                        approved: false,
-                                        checked: false,
-                                        type: "renewal",
-                                        renewal_account: accountId,
-                                        creation_date: new Date().toLocaleDateString(),
-                                        screenshot: true,
-                                        screenshot_file_id: photoFileId
-                                    }).save()){
-                                        ctx.reply(levels.purchase.responses.success,Markup.keyboard(
-                                        [
-                                            [levels.general.buttons.back]
-                                        ]).oneTime().resize());
-                                    }
-                                    else{
-                                        throw("خطایی در ثبت درخواست به وجود آمد. جهت بررسی مشکل و ادامه فرآیند تمدید به آیدی پشتیبانی پیام دهید");
-                                    }
-                                }
-                                else{
-                                    if(!isNaN(Number(message))){
-                                        if(await new reqs.Req({
-                                            telegram_chat_id: ctx.chat.id,
-                                            telegram_username: ctx.chat.username,
-                                            ref_id: Number(message),
-                                            approved: false,
-                                            checked: false,
-                                            type: "renewal",
-                                            renewal_account: accountId,
-                                            creation_date: (new Date()).toLocaleDateString()
-                                        }).save()){
-                                            ctx.reply(levels.purchase.responses.success,Markup.keyboard(
-                                            [
-                                                [levels.general.buttons.back]
-                                            ]).oneTime().resize());
-                                        }
-                                        else{
-                                            throw("خطایی در ثبت درخواست به وجود آمد. جهت بررسی مشکل و ادامه فرآیند تمدید به آیدی پشتیبانی پیام دهید");
-                                        }
-                                    }
-                                    else{
-                                        throw("کد وارد شده معتبر نمی باشد");
-                                    }
-                                }
-                            }
-                            
                             // *********************************************
                             // ========== Admin Default Messages ===========
                             // *********************************************
@@ -422,38 +320,6 @@ bot.on('message', (ctx) => {
                                 await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'home'}});
                             }
                             
-                            // else if(userObj.level === "requesting-account-files"){
-                            //     if(ctx.message.document){
-                            //         let fileId = ctx.message.document.file_id;
-                            //         let telegramFile = await bot.telegram.getFile(fileId);
-                            //         if(telegramFile){
-                            //             axios.get(`https://api.telegram.org/file/bot${config.get('bot_token')}/${telegramFile.file_path}`).then(getFileRes => {
-                            //                 let newProfiles = [];
-                            //                 getFileRes.data.forEach(item => {
-                            //                     newProfiles.push({
-                            //                         config_id: item[1],
-                            //                         link: item[2],
-                            //                         is_used: false,
-                            //                         import_date: (new Date()).toLocaleDateString()
-                            //                     });
-                            //                 })
-                                            
-                            //                 profiles.Profile.insertMany(newProfiles).then((res) => {
-                            //                     ctx.reply(levels.admin.responses.success);
-                            //                 }).catch(err => {
-                            //                     ctx.reply(JSON.stringify(err));
-                            //                     throw("خطایی در ثبت اکانت ها رخ داد");
-                            //                 })
-                            //             }).catch(err => {
-                            //                 throw("خطایی در افزودن اکانت ها رخ داد");
-                            //             });
-        
-                            //         }
-                            //         else{
-                            //             throw("");
-                            //         }
-                            //     }
-                            // }
                             
                         }
                         else{
@@ -712,8 +578,6 @@ bot.on('message', (ctx) => {
                                 })
                             
                                 
-                                
-    
                             }
                             
                             if(type.includes("req-reject")){
