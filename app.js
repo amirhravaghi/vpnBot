@@ -28,8 +28,8 @@ bot.on('message', (ctx) => {
         }
         // DB Connection
         mongoose.set('strictQuery', true);
-        // let connectionString = `mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}/${config.get('db.db_name')}?authSource=admin`;
-        let connectionString = "mongodb://localhost:27017/vpnbotdb";
+        let connectionString = `mongodb://${config.get('db.user')}:${config.get('db.pass')}@${config.get('db.host')}/${config.get('db.db_name')}?authSource=admin`;
+        // let connectionString = "mongodb://localhost:27017/vpnbotdb";
         mongoose.connect(connectionString,{ useNewUrlParser: true,useUnifiedTopology: true })
         .then(async () => {
             
