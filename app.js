@@ -3,7 +3,6 @@ process.env["NODE_CONFIG_DIR"] = __dirname + "/config/";
 const config = require('config');
 const { Telegraf, Markup } = require('telegraf');
 const mongoose = require('mongoose');
-const axios = require("axios");
 
 // ========== Modules ==========
 const levels = require("./modules/levels");
