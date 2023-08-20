@@ -81,7 +81,7 @@ bot.on('message', (ctx) => {
                     }
                 
                 case levels.home.buttons.tutorials:
-                    ctx.reply(generals.tutorial_message,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
+                    ctx.reply(levels.general.responses.tutorials,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
                     break;
                 
                 case levels.home.buttons.troubleshoot:
@@ -185,8 +185,7 @@ bot.on('message', (ctx) => {
                                         let curReq = await reqs.Req.findOne({telegram_chat_id: ctx.chat.id,status: "temp"}).exec();
                                         curReq.plan = message;
                                         if(await curReq.save()){
-                                            ctx.reply(levels.purchase.responses.payment,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
-                                            ctx.reply(generals.payment_description);
+                                            ctx.reply(generals.payment_description,Markup.keyboard([[levels.general.buttons.back]]).oneTime().resize());
                                         }
                                         else{
                                             throw("متاسفانه خطایی اتفاق افتاد. جهت بررسی و دریافت اکانت به آیدی پشتیبانی پیام دهید");
