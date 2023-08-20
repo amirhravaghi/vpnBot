@@ -2,13 +2,13 @@
     "db": {
         "db_name": "admin",
         "user": "admin",
-        "pass": "ytdru5yyjyst3wn",
-        "host": "main-iyh-service",
+        "pass": "9motimfgk4m52tg",
+        "host": "mongodb-fcq-service",
         "port": 80
     },
-    "bot_token": "6629558961:AAFcTAj02IJxLDlq04l8vjlT_MD9p989vcQ",
-    "bot_id": "@hypershop_vpn_bot",
+    "bot_token": "6573613159:AAEfaJPpWdcyX8LnsyufrZ48uBdjQESiHqU",
+    "bot_id": "@Hypeershop",
     "sponsor_channel": "@vpnbotchannel",
-    "domain": "https://guard.runflare.run",
+    "domain": "https://hyper.runflare.run",
     "port": 3000
 }
