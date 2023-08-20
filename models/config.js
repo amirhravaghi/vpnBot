@@ -9,7 +9,8 @@ const Config = mongoose.model('Config',new mongoose.Schema({
     tutorial_message: String,
     accounts_left: Number,
     disconnected_text: String,
-    lowspeed_text: String
+    lowspeed_text: String,
+    rules: String,
 }));
 
 

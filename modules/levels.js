@@ -42,6 +42,7 @@ let levels = {
             troubleshootMessage: "تغییر متن ارتباط با پشتیبانی",
             disconnectedMessage: "تغییر متن قطعی",
             lowspeedMessage: "تغییر متن کندی",
+            rulesMessage: "تغییر قوانین",
             serviceStatus: "سرویس دهی",
             troubleshootStatus: "حالت تعمیر",
             serviceActive: "✅ فعال",
@@ -56,6 +57,7 @@ let levels = {
                 [{text: levels.admin.buttons.troubleshootMessage, callback_data: "admin%troubleshoot-message"}],
                 [{text: levels.admin.buttons.disconnectedMessage, callback_data: "admin%disconnected-message"}],
                 [{text: levels.admin.buttons.lowspeedMessage, callback_data: "admin%lowspeed-message"}],
+                [{text: levels.admin.buttons.rulesMessage, callback_data: "admin%rules-message"}],
                 [{text: levels.admin.buttons.serviceStatus, callback_data: "admin%service-status"},{text: (configs.service_active ? levels.admin.buttons.serviceActive : levels.admin.buttons.serviceNotActive), callback_data: "admin%service-status"}],
                 [{text: levels.admin.buttons.viewNewReqsScreenShot, callback_data: "admin%new-reqs-screenshot"}],
             ]; 
@@ -114,13 +116,14 @@ let levels = {
             checkReq: "🔍 پیگیری پرداخت ها",
             lowspeed: "⚠️ کندی سرویس",
             disconnected: "❌ گزارش قطعی",
+            rules: "📃 قوانین خرید",
             admin: "⚙️ ادمین"
         },
         getKeyboardLayout: (admin = false) => {
             let kb = [
                 [levels.home.buttons.purchase],
                 [levels.home.buttons.troubleshoot,levels.home.buttons.tutorials],
-                [levels.home.buttons.checkReq],
+                [levels.home.buttons.checkReq,levels.home.buttons.rules],
                 [levels.home.buttons.lowspeed,levels.home.buttons.disconnected]
             ];
             if(admin) kb.push([levels.home.buttons.admin])
