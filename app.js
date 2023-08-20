@@ -19,7 +19,7 @@ const bot = new Telegraf(config.get('bot_token'));
 
 // Bot message handler
 bot.on('message', (ctx) => {
-
+    console.log("1st");
     ctx.telegram.getChatMember(config.get("sponsor_channel"),ctx.chat.id).then((chatMember) => {
         if(chatMember.status === "left" || chatMember.status === "kicked"){
             ctx.reply(levels.general.responses.notsub);
@@ -31,7 +31,7 @@ bot.on('message', (ctx) => {
         // let connectionString = "mongodb://localhost:27017/vpnbotdb";
         mongoose.connect(connectionString,{ useNewUrlParser: true,useUnifiedTopology: true })
         .then(async () => {
-            
+            console.log("2nd");
             let message = ctx.message.text;
             let generals = await generalConfigs.Config.findOne({});
             
@@ -647,6 +647,7 @@ bot.on('message', (ctx) => {
         });
 
     }).catch((e)=>{
+        console.log(e);
         throw(e);
     })
     

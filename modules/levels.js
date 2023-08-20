@@ -117,7 +117,7 @@ let levels = {
                 [levels.home.buttons.purchase],
                 [levels.home.buttons.troubleshoot,levels.home.buttons.tutorials],
                 [levels.home.buttons.checkReq],
-                [levels.home.lowspeed,levels.home.disconnected]
+                [levels.home.buttons.lowspeed,levels.home.buttons.disconnected]
             ];
             if(admin) kb.push([levels.home.buttons.admin])
             return kb;
