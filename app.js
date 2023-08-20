@@ -305,6 +305,38 @@ bot.on('message', (ctx) => {
                                 }
                                 await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'home'}});
                             }
+
+                            // Changing disconnected message by admin 
+                            else if(userObj.level === "changing-disconnected-message"){
+                                if(await generalConfigs.Config.updateOne({},{"$set":{disconnected_text: message}})){
+                                    ctx.reply(levels.admin.responses.success);
+                                    bot.telegram.sendMessage(ctx.chat.id,levels.admin.responses.menu,{
+                                        reply_markup: {
+                                            inline_keyboard: levels.admin.getKeyboardLayout(generals)
+                                        }
+                                    });
+                                }
+                                else{
+                                    throw("");
+                                }
+                                await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'home'}});
+                            }
+
+                            // Changing low speed message by admin 
+                            else if(userObj.level === "changing-lowspeed-message"){
+                                if(await generalConfigs.Config.updateOne({},{"$set":{lowspeed_text: message}})){
+                                    ctx.reply(levels.admin.responses.success);
+                                    bot.telegram.sendMessage(ctx.chat.id,levels.admin.responses.menu,{
+                                        reply_markup: {
+                                            inline_keyboard: levels.admin.getKeyboardLayout(generals)
+                                        }
+                                    });
+                                }
+                                else{
+                                    throw("");
+                                }
+                                await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'home'}});
+                            }
                             
                             
                             // Sending to all message handler
@@ -393,6 +425,30 @@ bot.on('message', (ctx) => {
                         case "troubleshoot-message":
                             ctx.answerCbQuery();
                             if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'changing-troubleshoot-message'}})){
+                                ctx.reply(levels.admin.responses.changeReq);
+                            }
+                            
+                            else{
+                                throw("");
+                            }
+                            
+                            break;
+                        
+                        case "disconnected-message":
+                            ctx.answerCbQuery();
+                            if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'changing-disconnected-message'}})){
+                                ctx.reply(levels.admin.responses.changeReq);
+                            }
+                            
+                            else{
+                                throw("");
+                            }
+                            
+                            break;
+
+                        case "lowspeed-message":
+                            ctx.answerCbQuery();
+                            if (await users.User.updateOne({telegram_chat_id:ctx.chat.id},{'$set':{level: 'changing-lowspeed-message'}})){
                                 ctx.reply(levels.admin.responses.changeReq);
                             }
                             

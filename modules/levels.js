@@ -40,6 +40,8 @@ let levels = {
             paymentDescription: "تغییر متن روش پرداخت",
             sendAllMessage: "ارسال پیام همگانی",
             troubleshootMessage: "تغییر متن ارتباط با پشتیبانی",
+            disconnectedMessage: "تغییر متن قطعی",
+            lowspeedMessage: "تغییر متن کندی",
             serviceStatus: "سرویس دهی",
             troubleshootStatus: "حالت تعمیر",
             serviceActive: "✅ فعال",
@@ -52,6 +54,8 @@ let levels = {
                 [{text: levels.admin.buttons.paymentDescription, callback_data: "admin%payment-description"}],
                 [{text: levels.admin.buttons.sendAllMessage, callback_data: "admin%send-all"}],
                 [{text: levels.admin.buttons.troubleshootMessage, callback_data: "admin%troubleshoot-message"}],
+                [{text: levels.admin.buttons.disconnectedMessage, callback_data: "admin%disconnected-message"}],
+                [{text: levels.admin.buttons.lowspeedMessage, callback_data: "admin%lowspeed-message"}],
                 [{text: levels.admin.buttons.serviceStatus, callback_data: "admin%service-status"},{text: (configs.service_active ? levels.admin.buttons.serviceActive : levels.admin.buttons.serviceNotActive), callback_data: "admin%service-status"}],
                 [{text: levels.admin.buttons.viewNewReqsScreenShot, callback_data: "admin%new-reqs-screenshot"}],
             ]; 
