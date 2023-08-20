@@ -7,7 +7,9 @@ const Config = mongoose.model('Config',new mongoose.Schema({
     service_troubleshoot_active: Boolean,
     troubleshoot_message: String,
     tutorial_message: String,
-    accounts_left: Number
+    accounts_left: Number,
+    disconnected_text: String,
+    lowspeed_text: String
 }));
 
 

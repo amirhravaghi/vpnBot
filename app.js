@@ -93,6 +93,14 @@ bot.on('message', (ctx) => {
                     }
                     ctx.reply(generals.troubleshoot_message,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
                     break;
+
+                case levels.home.buttons.disconnected:
+                    ctx.reply(generals.disconnected_text);
+                    break;
+
+                case levels.home.buttons.lowspeed:
+                    ctx.reply(generals.lowspeed_text);
+                    break;
                 
                 case levels.home.buttons.checkReq:
                     let userReqs = await reqs.Req.find({telegram_chat_id: ctx.chat.id}).exec();

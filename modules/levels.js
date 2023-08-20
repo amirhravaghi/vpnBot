@@ -108,13 +108,16 @@ let levels = {
             renewal: "🧾 وضعیت / تمدید سرویس",
             tutorials: "🪄 آموزش نصب و راه اندازی",
             checkReq: "🔍 پیگیری پرداخت ها",
+            disconnected: "⚠️ قطعی سرویس",
+            lowspeed: "❌ گزارش قطعی",
             admin: "⚙️ ادمین"
         },
         getKeyboardLayout: (admin = false) => {
             let kb = [
                 [levels.home.buttons.purchase],
                 [levels.home.buttons.troubleshoot,levels.home.buttons.tutorials],
-                [levels.home.buttons.checkReq]
+                [levels.home.buttons.checkReq],
+                [levels.home.lowspeed,levels.home.disconnected]
             ];
             if(admin) kb.push([levels.home.buttons.admin])
             return kb;
