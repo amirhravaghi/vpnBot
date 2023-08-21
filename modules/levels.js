@@ -89,7 +89,7 @@ https://t.me/helprunservershypervpn`
         },
         getScreenshotReqKeyboard: (req,remaining) => {
             return [
-                    [{text: `${item.caption ? item.caption : "کپشنی ارسال نشده است"}`, callback_data: "label"}],
+                    [{text: `${req.caption ? req.caption : "کپشنی ارسال نشده است"}`, callback_data: "label"}],
                     [{text: `u/c: ${req.telegram_username ? req.telegram_username : req.telegram_chat_id}`, callback_data: "reqUsername"}],
                     [{text: `${req.plan ? req.plan : "پلن مشخص نشده"}`, callback_data: "label"}],
                     [{text: `${req.operator ? req.operator : "اپراتور مشخص نشده"}`, callback_data: "label"}],
