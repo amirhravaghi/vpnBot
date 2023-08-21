@@ -73,6 +73,7 @@ https://t.me/helprunservershypervpn`
                 if(reqs[i]){
                     let item = reqs[i];
                     kb.push(
+                    [{text: `${item.caption ? item.caption : "کپشنی ارسال نشده است"}`, callback_data: "label"}],
                     [{text: `u/c: ${item.telegram_username ? item.telegram_username : item.telegram_chat_id} / ref: ${item.ref_id}`, callback_data: "label"}],
                     [{text: `${item.plan ? item.plan : "پلن مشخص نشده"}`, callback_data: "label"}],
                     [{text: `${item.operator ? item.operator : "اپراتور مشخص نشده"}`, callback_data: "label"}],
@@ -113,7 +114,7 @@ https://t.me/helprunservershypervpn`
     home: {
         response: "به ربات هایپر وی پی ان خوش آمدید",
         buttons: {
-            purchase: "🛒 خرید سرویس جدید",
+            purchase: "🛒 خرید سرویس جدید / تمدید",
             troubleshoot: "👤 ارتباط با پشتیبانی",
             renewal: "🧾 وضعیت / تمدید سرویس",
             tutorials: "🪄 آموزش نصب و راه اندازی",

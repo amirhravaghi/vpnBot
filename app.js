@@ -198,10 +198,12 @@ bot.on('message', (ctx) => {
                             if(userObj.level === "purchase_3" && message !== levels.home.buttons.admin){
                                 if(ctx.message.photo){
                                     let photoFileId = ctx.message.photo[ctx.message.photo.length - 1].file_id;
+                                    let caption = ctx.message.caption ? ctx.message.caption : null;
                                     let curReq = await reqs.Req.findOne({telegram_chat_id: ctx.chat.id,status: "temp"}).exec();
                                     curReq.screenshot = true;
                                     curReq.screenshot_file_id = photoFileId;
                                     curReq.status = "complete";
+                                    curReq.caption = caption;
                                     if(await curReq.save()){
                                         ctx.reply(levels.purchase.responses.success,Markup.keyboard(
                                         [

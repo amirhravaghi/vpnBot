@@ -6,6 +6,7 @@ const Req = mongoose.model('req',new mongoose.Schema({
     ref_id: {type: Number, default: null},
     screenshot: {type: Boolean, default: false},
     screenshot_file_id: {type: String, default: null},
+    caption: {type: String, default: null},
     approved: Boolean,
     checked: Boolean,
     type: String,
