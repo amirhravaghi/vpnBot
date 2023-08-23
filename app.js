@@ -86,22 +86,22 @@ bot.on('message', (ctx) => {
                 
                 case levels.home.buttons.troubleshoot:
                     if(generals.service_troubleshoot_active){
-                        ctx.reply(levels.general.responses.troubleshoot);
+                        ctx.reply(levels.general.responses.troubleshoot,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
                         break;
                     }
                     ctx.reply(generals.troubleshoot_message,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
                     break;
 
                 case levels.home.buttons.disconnected:
-                    ctx.reply(generals.disconnected_text);
+                    ctx.reply(generals.disconnected_text,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
                     break;
 
                 case levels.home.buttons.lowspeed:
-                    ctx.reply(generals.lowspeed_text);
+                    ctx.reply(generals.lowspeed_text,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
                     break;
 
                 case levels.home.buttons.rules:
-                    ctx.reply(generals.rules);
+                    ctx.reply(generals.rules,Markup.keyboard(levels.home.getKeyboardLayout(isAdmin)).oneTime().resize());
                     break;
                 
                 case levels.home.buttons.checkReq:
