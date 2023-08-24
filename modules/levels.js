@@ -181,7 +181,7 @@ https://t.me/helprunservershypervpn`
             ];
         },
         decorateAccount: (account) => {
-            return levels.purchase.responses.accountHeader + "\n\n" + "*آیدی:*\n" + account.id + "\n\n*لینک اکانت:*\n" + account.config + "\n\n" + levels.purchase.responses.accountFooter;
+            return levels.purchase.responses.accountHeader + "\n\n" + "آیدی:\n" + account.id + "\n\nلینک اکانت:\n" + account.config + "\n\n" + levels.purchase.responses.accountFooter;
         }
     },
     plans: {
