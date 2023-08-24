@@ -239,7 +239,7 @@ bot.on('message', (ctx) => {
                                             let account = await accountModel.Account.findOne(cond);
                                             if(account){
                                                 ctx.telegram.sendMessage(account.telegram_chat_id,levels.purchase.decorateAccount({id: account._id,config: account.config}),{
-                                                    parse_mode: "MarkdownV2"
+                                                    parse_mode: "HTML"
                                                 });
                                             }
                                             else{
@@ -624,7 +624,7 @@ bot.on('message', (ctx) => {
                                     
                                     if(await req.save()){
                                         bot.telegram.sendMessage(req.telegram_chat_id,levels.purchase.decorateAccount({id: req._id,config: req.config}),{
-                                            parse_mode: "MarkdownV2"
+                                            parse_mode: "HTML"
                                         });
                                         
                                         // Set new keyboard
