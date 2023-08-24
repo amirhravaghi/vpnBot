@@ -238,7 +238,9 @@ bot.on('message', (ctx) => {
                                             cond = userReq.screenshot ? {screenshot_file_id: userReq.screenshot_file_id} : {ref_id: userRefId};
                                             let account = await accountModel.Account.findOne(cond);
                                             if(account){
-                                                ctx.telegram.sendMessage(account.telegram_chat_id,levels.purchase.decorateAccount({id: account._id,config: account.config}));
+                                                ctx.telegram.sendMessage(account.telegram_chat_id,levels.purchase.decorateAccount({id: account._id,config: account.config}),{
+                                                    parse_mode: "MarkdownV2"
+                                                });
                                             }
                                             else{
                                                 throw("اکانت پیدا نشد");
